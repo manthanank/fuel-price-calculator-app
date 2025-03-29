@@ -1,6 +1,15 @@
-import { Component, signal, computed, effect, inject } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  effect,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
+import { TrackService } from './services/track.service';
+import { Visit } from './models/visit.model';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +17,10 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'fuel-price-calculator';
   private document = inject(DOCUMENT);
+  private trackService = inject(TrackService);
 
   vehicles = ['Bike', 'Car', 'Truck', 'Bus', 'Van'];
 
@@ -20,6 +30,11 @@ export class AppComponent {
   distance = signal<number | null>(null);
   petrolPrice = signal<number | null>(null);
   formSubmitted = signal<boolean>(false);
+
+  // Visitor count state
+  visitorCount = signal<number>(0);
+  isVisitorCountLoading = signal<boolean>(false);
+  visitorCountError = signal<string | null>(null);
 
   // Theme state
   darkMode = signal<boolean>(false);
@@ -43,6 +58,27 @@ export class AppComponent {
       }
       // Save preference to localStorage
       localStorage.setItem('theme', this.darkMode() ? 'dark' : 'light');
+    });
+  }
+
+  ngOnInit(): void {
+    this.trackVisit();
+  }
+
+  private trackVisit(): void {
+    this.isVisitorCountLoading.set(true);
+    this.visitorCountError.set(null);
+
+    this.trackService.trackProjectVisit(this.title).subscribe({
+      next: (response: Visit) => {
+        this.visitorCount.set(response.uniqueVisitors);
+        this.isVisitorCountLoading.set(false);
+      },
+      error: (err: Error) => {
+        console.error('Failed to track visit:', err);
+        this.visitorCountError.set('Failed to load visitor count');
+        this.isVisitorCountLoading.set(false);
+      },
     });
   }
 
@@ -72,7 +108,7 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     const parsedValue = value ? parseFloat(value) : null;
-    
+
     // Ensure value is not negative
     if (parsedValue !== null && parsedValue < 0) {
       target.value = '0';
@@ -86,7 +122,7 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     const parsedValue = value ? parseFloat(value) : null;
-    
+
     // Ensure value is not negative
     if (parsedValue !== null && parsedValue < 0) {
       target.value = '0';
@@ -100,7 +136,7 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     const parsedValue = value ? parseFloat(value) : null;
-    
+
     // Ensure value is not negative
     if (parsedValue !== null && parsedValue < 0) {
       target.value = '0';
