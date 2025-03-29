@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "petrol-price-calculator": {
+    "fuel-price-calculator-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/petrol-price-calculator",
+            "outputPath": "dist/fuel-price-calculator-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "petrol-price-calculator:build:production"
+              "buildTarget": "fuel-price-calculator-app:build:production"
             },
             "development": {
-              "buildTarget": "petrol-price-calculator:build:development"
+              "buildTarget": "fuel-price-calculator-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "0eb5db6e-1973-4599-8b63-fe0ee4421f86"
   }
 }

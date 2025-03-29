@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'petrol-price-calculator' title`, () => {
+  it(`should have the 'fuel-price-calculator-app' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('petrol-price-calculator');
+    expect(app.title).toEqual('fuel-price-calculator-app');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, petrol-price-calculator');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, fuel-price-calculator-app');
   });
 });
