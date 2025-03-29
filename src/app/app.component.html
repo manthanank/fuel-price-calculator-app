@@ -1,0 +1,23 @@
+<div class="container">
+  <h2>Petrol Cost Calculator</h2>
+
+  <label>Vehicle Type:</label>
+  <select [(ngModel)]="selectedVehicle">
+    <option *ngFor="let vehicle of vehicleTypes" [ngValue]="vehicle">
+      {{ vehicle.name }} ({{ vehicle.mileage }} km/l)
+    </option>
+  </select>
+
+  <label>Distance (km):</label>
+  <input type="number" [(ngModel)]="distance">
+
+  <label>Petrol Price (₹ per liter):</label>
+  <input type="number" [(ngModel)]="petrolPrice">
+
+  <button (click)="calculateCost()">Calculate</button>
+
+  <div *ngIf="totalFuel > 0">
+    <p>Total Petrol Required: {{ totalFuel.toFixed(2) }} liters</p>
+    <p>Total Cost: ₹{{ totalCost.toFixed(2) }}</p>
+  </div>
+</div>
